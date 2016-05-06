@@ -1,0 +1,34 @@
+<%= form_for(setup_teacher(@teacher)) do |f| %>
+  <% if @teacher.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@teacher.errors.count, "error") %> prohibited this teacher from being saved:</h2>
+
+      <ul>
+      <% @teacher.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+    <%= f.fields_for :user do |user_fields| %>
+      <div class="field">
+        <%= user_fields.label :email %>
+        <%= user_fields.text_field :email %>
+      </div>
+      <div class="field">
+        <%= user_fields.label :password %>
+        <%= user_fields.text_field :password %>
+      </div>
+    <% end %> 
+
+
+  <div class="field">
+    <%= f.label :school %><br>
+    <%= f.text_field :school %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
