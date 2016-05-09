@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Artist Expertises</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @artist_expertises.each do |artist_expertise| %>
+      <tr>
+        <td><%= artist_expertise.name %></td>
+        <td><%= link_to 'Show', artist_expertise %></td>
+        <td><%= link_to 'Edit', edit_artist_expertise_path(artist_expertise) %></td>
+        <td><%= link_to 'Destroy', artist_expertise, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Artist expertise', new_artist_expertise_path %>

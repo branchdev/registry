@@ -1,0 +1,21 @@
+<%= form_for(@artist_expertise) do |f| %>
+  <% if @artist_expertise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@artist_expertise.errors.count, "error") %> prohibited this artist_expertise from being saved:</h2>
+
+      <ul>
+      <% @artist_expertise.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

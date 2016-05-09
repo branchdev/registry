@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :artist_expertises
+  resources :school_interests
   resources :artists
   resources :teachers
   devise_for :users

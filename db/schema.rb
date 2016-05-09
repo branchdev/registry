@@ -11,12 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505212814) do
+ActiveRecord::Schema.define(version: 20160506204329) do
+
+  create_table "artist_expertises", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "artist_expertises_artists", id: false, force: :cascade do |t|
+    t.integer "artist_id",           null: false
+    t.integer "artist_expertise_id", null: false
+  end
 
   create_table "artists", force: :cascade do |t|
     t.text     "inspiration"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "school_interests", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "school_interests_teachers", id: false, force: :cascade do |t|
+    t.integer "teacher_id",         null: false
+    t.integer "school_interest_id", null: false
   end
 
   create_table "teachers", force: :cascade do |t|

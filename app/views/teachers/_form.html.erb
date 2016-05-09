@@ -28,6 +28,17 @@
     <%= f.label :school %><br>
     <%= f.text_field :school %>
   </div>
+  <div class="field">
+  <%= f.label "Area of Interest" %><br />
+  <%= f.collection_check_boxes :school_interest_ids, SchoolInterest.all, :id, :name do |b| %>
+    <div class="collection-check-box">
+      <%= b.check_box %>
+      <%= b.label %>
+    </div>
+  <% end %>
+</div>
+
+
   <div class="actions">
     <%= f.submit %>
   </div>
