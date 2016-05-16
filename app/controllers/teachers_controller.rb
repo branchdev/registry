@@ -1,5 +1,6 @@
 class TeachersController < ApplicationController
   before_action :set_teacher, only: [:show, :edit, :update, :destroy]
+  before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /teachers
   # GET /teachers.json
@@ -62,6 +63,10 @@ class TeachersController < ApplicationController
   end
 
   private
+    def require_authorization
+      redirect_to artist_expertises_path, flash: {notice:"Cannot perform action."} unless current_user.meta_id == @teacher.id || current_user.admin?
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_teacher
       @teacher = Teacher.find(params[:id])

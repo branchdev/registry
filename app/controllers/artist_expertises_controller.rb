@@ -1,6 +1,6 @@
 class ArtistExpertisesController < ApplicationController
   before_action :set_artist_expertise, only: [:show, :edit, :update, :destroy]
-
+  before_filter :require_authorization, only: [:edit, :update, :destroy, :new, :create]
   # GET /artist_expertises
   # GET /artist_expertises.json
   def index
@@ -62,6 +62,11 @@ class ArtistExpertisesController < ApplicationController
   end
 
   private
+
+    def require_authorization
+      redirect_to artist_expertises_path, flash: {notice:"Cannot perform action."} unless current_user && current_user.admin?
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_artist_expertise
       @artist_expertise = ArtistExpertise.find(params[:id])

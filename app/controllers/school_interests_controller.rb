@@ -1,5 +1,6 @@
 class SchoolInterestsController < ApplicationController
   before_action :set_school_interest, only: [:show, :edit, :update, :destroy]
+  before_filter :require_authorization, only: [:edit, :update, :destroy, :new, :create]
 
   # GET /school_interests
   # GET /school_interests.json
@@ -62,6 +63,11 @@ class SchoolInterestsController < ApplicationController
   end
 
   private
+
+    def require_authorization
+      redirect_to school_interests_path, flash: {notice:"Cannot perform action."} unless current_user && current_user.admin?
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_school_interest
       @school_interest = SchoolInterest.find(params[:id])

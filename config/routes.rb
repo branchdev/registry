@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  root 'pages#home'
+
+  get 'pages/about'
+
   resources :artist_expertises
   resources :school_interests
   resources :artists
