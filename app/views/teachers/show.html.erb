@@ -3,6 +3,7 @@
 <p>
   <strong>School:</strong>
   <%= @teacher.school %>
+    <br><h2>Interests:</h2><h3><%=  @teacher.school_interests.map(&:name).sort.join(", ") %></h3>
 </p>
 
 <%= link_to 'Edit', edit_teacher_path(@teacher) %> |

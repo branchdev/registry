@@ -1,10 +1,12 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: [:show, :edit, :update, :destroy]
+  before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /artists
   # GET /artists.json
   def index
-    @artists = Artist.all
+    @search = Artist.search(params[:q])
+    @artists = @search.result(distinct: true)
   end
 
   # GET /artists/1
@@ -62,6 +64,9 @@ class ArtistsController < ApplicationController
   end
 
   private
+    def require_authorization
+      redirect_to teachers_path, flash: {notice:"Cannot perform action."} unless current_user.meta_id == @artist.id || current_user.admin?
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_artist
       @artist = Artist.find(params[:id])
@@ -69,6 +74,6 @@ class ArtistsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def artist_params
-      params.require(:artist).permit(:inspiration, user_attributes: [ :id, :email, :password], artist_interests_ids:[])
+      params.require(:artist).permit(:inspiration, user_attributes: [ :id, :email, :password], artist_expertise_ids:[])
     end
 end

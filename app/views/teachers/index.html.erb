@@ -1,27 +1,57 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Teachers</h1>
+<h1>Registered Educators</h1>
 
 <table>
   <thead>
     <tr>
       <th>School</th>
-      <th colspan="3"></th>
+      <th>Interests</th>
+      <th>Details</th>      
     </tr>
   </thead>
 
+
+<% if @schools %>
   <tbody>
-    <% @teachers.each do |teacher| %>
+
+    <% @schools.each do |teacher| %>
       <tr>
-        <td><%= teacher.school %></td>
-        <td><%= link_to 'Show', teacher %></td>
-        <td><%= link_to 'Edit', edit_teacher_path(teacher) %></td>
-        <td><%= link_to 'Destroy', teacher, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td> <%= teacher.school %></td>
+        <td>  <%=  teacher.school_interests.map(&:name).sort.join(", ") %></td>
+        <td> <%= link_to 'View Profile', teacher %></td>
+
+
+
       </tr>
+    
     <% end %>
+
   </tbody>
+  
 </table>
 
-<br>
+<% end %>
 
-<%= link_to 'New Teacher', new_teacher_path %>
+
+<fieldset class="search-field">
+  <legend>Search Educators and Schools</legend>
+  <%= search_form_for @search do |f| %>
+    <div class="field">
+      <%= f.label :school_cont, "Name contains" %>
+      <%= f.text_field :school_cont %>
+    </div>
+
+    <div class="field">
+      <%= f.label "Area of Interests" %><br />
+      <%= f.collection_check_boxes :school_interests_id_in_any, SchoolInterest.all, :id, :name do |b| %>
+        <div class="collection-check-box">
+          <%= b.check_box %>
+          <%= b.label %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="actions"><%= f.submit "Search" %></div>
+  <% end %>
+</fieldset>

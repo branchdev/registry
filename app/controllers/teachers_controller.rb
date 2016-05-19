@@ -5,7 +5,8 @@ class TeachersController < ApplicationController
   # GET /teachers
   # GET /teachers.json
   def index
-    @teachers = Teacher.all
+    @search = Teacher.search(params[:q])
+    @schools = @search.result(distinct: true)
   end
 
   # GET /teachers/1
@@ -64,7 +65,7 @@ class TeachersController < ApplicationController
 
   private
     def require_authorization
-      redirect_to artist_expertises_path, flash: {notice:"Cannot perform action."} unless current_user.meta_id == @teacher.id || current_user.admin?
+      redirect_to artists_path, flash: {notice:"Cannot perform action."} unless current_user.meta_id == @teacher.id || current_user.admin?
     end
 
     # Use callbacks to share common setup or constraints between actions.

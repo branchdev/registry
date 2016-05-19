@@ -5,23 +5,47 @@
 <table>
   <thead>
     <tr>
+      <th>Name</th>
       <th>Inspiration</th>
       <th colspan="3"></th>
     </tr>
   </thead>
-
+  
+  <% if @artists %>
   <tbody>
     <% @artists.each do |artist| %>
       <tr>
-        <td><%= artist.inspiration %></td>
-        <td><%= link_to 'Show', artist %></td>
-        <td><%= link_to 'Edit', edit_artist_path(artist) %></td>
-        <td><%= link_to 'Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td> <%= artist.inspiration %></td>
+        <td> <%= artist.artist_expertises.map(&:name).sort.join(", ") %></td>
+        <td> <%= link_to 'View Profile', artist %></td>
       </tr>
-    <% end %>
+      <% end %>
+
   </tbody>
+
+  
 </table>
 
-<br>
+<% end %>
 
-<%= link_to 'New Artist', new_artist_path %>
+<fieldset class="search-field">
+  <legend>Search for Artists</legend>
+  <%= search_form_for @search do |f| %>
+    <div class="field">
+      <%= f.label :inspiration_cont, "Name contains" %>
+      <%= f.text_field :inspiration_cont %>
+    </div>
+
+    <div class="field">
+      <%= f.label "Area of Interests" %><br />
+      <%= f.collection_check_boxes :artist_expertises_id_in_any, ArtistExpertise.all, :id, :name do |b| %>
+        <div class="collection-check-box">
+          <%= b.check_box %>
+          <%= b.label %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="actions"><%= f.submit "Search" %></div>
+  <% end %>
+</fieldset>

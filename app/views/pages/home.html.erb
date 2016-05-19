@@ -1,1 +1,17 @@
 <h1>Welcome to the Artists 4 Kids registry!</h1>
+
+
+<% if current_user %>
+	<% if current_user.meta_type =="Teacher" %>
+		<%= link_to "Search Artists", artists_path %>
+	<% else %>
+		<%= link_to "Search Schools", teachers_path %>
+	<% end %>
+
+<% else %>
+
+	<%= link_to "Create Artist Account", new_artist_path %>	
+	<br>
+	<%= link_to "Create Teacher Account", new_teacher_path %>
+
+<% end %>
