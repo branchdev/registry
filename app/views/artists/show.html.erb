@@ -7,5 +7,7 @@
   <br><h2>Area of Expertise:</h2><h3><%= @artist.artist_expertises.map(&:name).sort.join(", ") %></h3>
 </p>
 
-<%= link_to 'Edit', edit_artist_path(@artist) %> |
+<% if current_user.id == @artist.user.id %>
+	<%= link_to 'Edit', edit_artist_path(@artist) %> |
+<% end %>
 <%= link_to 'Back', artists_path %>

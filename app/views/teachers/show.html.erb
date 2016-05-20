@@ -6,5 +6,7 @@
     <br><h2>Interests:</h2><h3><%=  @teacher.school_interests.map(&:name).sort.join(", ") %></h3>
 </p>
 
-<%= link_to 'Edit', edit_teacher_path(@teacher) %> |
+<% if current_user.id == @teacher.user.id %>
+	<%= link_to 'Edit', edit_teacher_path(@teacher) %> |
+<% end %>
 <%= link_to 'Back', teachers_path %>
