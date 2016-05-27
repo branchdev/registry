@@ -1,12 +1,20 @@
 class TeachersController < ApplicationController
   before_action :set_teacher, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user! 
   before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /teachers
   # GET /teachers.json
   def index
-    @search = Teacher.search(params[:q])
-    @schools = @search.result(distinct: true)
+
+   if params[:q] && params[:q].reject {|k, v| v.blank? }.present?
+    @q = Teacher.search(params[:q])
+    @schools = @q.result
+  else
+    @q = Teacher.search
+    @schools = []
+  end
+  
   end
 
   # GET /teachers/1

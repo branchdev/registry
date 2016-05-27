@@ -1,12 +1,18 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
   before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /artists
   # GET /artists.json
   def index
-    @search = Artist.search(params[:q])
-    @artists = @search.result(distinct: true)
+    if params[:q] && params[:q].reject {|k, v| v.blank? }.present?
+    @q = Artist.search(params[:q])
+    @artists = @q.result
+  else
+    @q = Artist.search
+    @artists = []
+  end
   end
 
   # GET /artists/1
