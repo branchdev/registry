@@ -1,6 +1,5 @@
 class ArtistsController < ApplicationController
   before_action :set_artist, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
   before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /artists
@@ -8,7 +7,7 @@ class ArtistsController < ApplicationController
   def index
     if params[:q] && params[:q].reject {|k, v| v.blank? }.present?
     @q = Artist.search(params[:q])
-    @artists = @q.result
+    @artists = @q.result(distinct: true)
   else
     @q = Artist.search
     @artists = []
@@ -36,7 +35,7 @@ class ArtistsController < ApplicationController
 
     respond_to do |format|
       if @artist.save
-        format.html { redirect_to @artist, notice: 'Artist was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Artist was successfully created.' }
         format.json { render :show, status: :created, location: @artist }
       else
         format.html { render :new }

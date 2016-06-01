@@ -1,15 +1,14 @@
 class TeachersController < ApplicationController
   before_action :set_teacher, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user! 
-  before_filter :require_authorization, only: [:edit, :update, :destroy]
+  before_filter :require_authorization, only: [:edit, :update, :destroy, :show]
 
   # GET /teachers
   # GET /teachers.json
   def index
 
    if params[:q] && params[:q].reject {|k, v| v.blank? }.present?
-    @q = Teacher.search(params[:q])
-    @schools = @q.result
+    @q = Teacher.search(params[:q]).distinct
+    @schools = @q.result(distinct: true)
   else
     @q = Teacher.search
     @schools = []
@@ -38,7 +37,7 @@ class TeachersController < ApplicationController
 
     respond_to do |format|
       if @teacher.save
-        format.html { redirect_to @teacher, notice: 'Teacher was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Teacher was successfully created.' }
         format.json { render :show, status: :created, location: @teacher }
       else
         format.html { render :new }

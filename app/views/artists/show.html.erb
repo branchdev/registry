@@ -1,13 +1,92 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Inspiration:</strong>
-  <%= @artist.inspiration %>
+	<strong>Inspiration:</strong>
+	<%= @artist.inspiration %>
 
-  <br><h2>Area of Expertise:</h2><h3><%= @artist.artist_expertises.map(&:name).sort.join(", ") %></h3>
+	<br><h2>Area of Expertise:</h2><h3><%= @artist.artist_expertises.map(&:name).sort.join(", ") %></h3>
 </p>
 
 <% if current_user.id == @artist.user.id or current_user.admin?%>
+
+	<% connections = Connection.where(artist_id: @artist.id)%>
+
+	
+
+	<% pending = [] %>
+	
+	<% accepted = [] %>
+
+	<% connections.each do |c| %>
+		<% if  c.status == 'artist' || c.status == 'teacher' %>
+			<% pending.append(c) %>
+		<% elsif c.status == 'accepted' %>
+			<% accepted.append(c) %>
+		<% end %>
+	<% end %>
+
+	<%= debug(params) %>
+
+	<h2>Connections</h2>
+
+	<% if accepted.empty? %>
+		<h3>No current connections</h3>
+	<% else %>
+		
+		<table>
+			<tr>
+				<th>artist_id</th>
+				<th>teacher_id</th>
+				<th>status</th>
+			</tr>
+			<% accepted.each do |conn| %>
+			<%= debug(conn.id) %>
+				<tr>
+					<td> <%= conn.artist_id %></td>
+					<td> <%= conn.teacher_id %></td>
+					<td> Connected!</td>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
+	
+
+	
+	<h2>Pending Connections</h2>
+	<% if pending.empty? %>
+		<h3>No current pending connections</h3>
+	<% else %>
+		<table>
+			<tr>
+				<th>artist_id</th>
+				<th>teacher_id</th>
+				<th>status</th>
+			</tr>
+			<% pending.each do |conn| %>
+				<%= debug(conn.id) %>
+				<tr>
+					<td> <%= conn.artist_id %></td>
+					<td> <%= conn.teacher_id %></td>
+					<td> Pending Connection</td>
+					<% if conn.status == 'artist' %>
+						<td> <%= link_to 'Accept Connection', connection_path(:id => conn.id), :method => "put" %></td>
+						<td> <%= link_to 'Decline Connection', connection_path(:id => conn.id), :method => :delete %></td>
+					<% end %>
+				</tr>
+			<% end %>
+		</table>
+
+	<% end %>
+
+	
+
+
+
 	<%= link_to 'Edit', edit_artist_path(@artist) %> |
+
+<% else %>
+
+	<%= link_to '+ Connect', connection_request_connection_path(params[:id]), :method => :put  %>
 <% end %>
-<%= link_to 'Back', artists_path %>
+
+	<%= link_to 'Back', artists_path %>

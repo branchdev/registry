@@ -8,6 +8,15 @@ Rails.application.routes.draw do
   resources :artists
   resources :teachers
   devise_for :users
+
+  resources :connections do
+    member do
+      put 'connection_request'
+      # put 'connection_request_accept'
+      # delete 'connection_request_reject'
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
