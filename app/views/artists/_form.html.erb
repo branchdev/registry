@@ -1,44 +1,64 @@
-<%= form_for(setup_artist(@artist)) do |f| %>
-  <% if @artist.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@artist.errors.count, "error") %> prohibited this artist from being saved:</h2>
 
-      <ul>
-      <% @artist.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+
+
+<%= form_for(setup_artist(@artist)) do |f| %>
+<% if @artist.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@artist.errors.count, "error") %> prohibited this artist from being saved:</h2>
+
+  <ul>
+    <% @artist.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<% if @artist2 %>
+  <%= debug(@artist2) %>
+  <% else %>
+    <h1>no artist2</h1>
   <% end %>
 
-  <%= f.fields_for :user do |user_fields| %>
-      <div class="field">
-        <%= user_fields.label :email %>
-        <%= user_fields.text_field :email %>
-      </div>
-      <div class="field">
-        <%= user_fields.label :password %>
-        <%= user_fields.text_field :password %>
-      </div>
-    <% end %> 
+<%= f.fields_for :user do |user_fields| %>
+<div class="field">
+  <%= user_fields.label :email %>
+  <%= user_fields.text_field :email, autofocus: true %>
+</div>
+<div class="field">
+  <%= user_fields.label :password %>
+  <%= user_fields.text_field :password %>
+</div>
+<div class="field">
+  <%= user_fields.label :first_name %>
+  <%= user_fields.text_field :password %>
+</div><div class="field">
+  <%= user_fields.label :last_name %>
+  <%= user_fields.text_field :password %>
+</div>
 
-  <div class="field">
-    <%= f.label :inspiration %><br>
-    <%= f.text_area :inspiration %>
-  </div>
-  
-  <div class="field">
+
+
+<% end %> 
+
+
+
+<div class="field">
+  <%= f.label :inspiration %><br>
+  <%= f.text_area :inspiration %>
+</div>
+
+<div class="field">
   <%= f.label "Area of Expertise" %><br />
   <%= f.collection_check_boxes :artist_expertise_ids, ArtistExpertise.all, :id, :name do |b| %>
-    <div class="collection-check-box">
-      <%= b.check_box %>
-      <%= b.label %>
-    </div>
+  <div class="collection-check-box">
+    <%= b.check_box %>
+    <%= b.label %>
+  </div>
   <% end %>
 </div>
 
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<div class="actions">
+  <%= f.submit %>
+</div>
 <% end %>

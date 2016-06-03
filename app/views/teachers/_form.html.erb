@@ -1,45 +1,54 @@
 <%= form_for(setup_teacher(@teacher)) do |f| %>
-  <% if @teacher.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@teacher.errors.count, "error") %> prohibited this teacher from being saved:</h2>
+<% if @teacher.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@teacher.errors.count, "error") %> prohibited this teacher from being saved:</h2>
 
-      <ul>
-      <% @teacher.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-
-    <%= f.fields_for :user do |user_fields| %>
-      <div class="field">
-        <%= user_fields.label :email %>
-        <%= user_fields.text_field :email %>
-      </div>
-      <div class="field">
-        <%= user_fields.label :password %>
-        <%= user_fields.text_field :password %>
-      </div>
-    <% end %> 
+  <ul>
+    <% @teacher.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 
 
-  <div class="field">
-    <%= f.label :school %><br>
-    <%= f.text_field :school %>
-  </div>
-  <div class="field">
+<%= f.fields_for :user do |user_fields| %>
+<div class="field">
+  <%= user_fields.label :email %>
+  <%= user_fields.text_field :email %>
+</div>
+<div class="field">
+  <%= user_fields.label :password %>
+  <%= user_fields.text_field :password %>
+</div>
+<div class="field">
+  <%= user_fields.label :first_name %>
+  <%= user_fields.text_field :password %>
+</div><div class="field">
+  <%= user_fields.label :last_name %>
+  <%= user_fields.text_field :password %>
+</div>
+<% end %> 
+
+
+
+
+<div class="field">
+  <%= f.label :school %><br>
+  <%= f.text_field :school %>
+</div>
+<div class="field">
   <%= f.label "Area of Interest" %><br />
   <%= f.collection_check_boxes :school_interest_ids, SchoolInterest.all, :id, :name do |b| %>
-    <div class="collection-check-box">
-      <%= b.check_box %>
-      <%= b.label %>
-    </div>
+  <div class="collection-check-box">
+    <%= b.check_box %>
+    <%= b.label %>
+  </div>
   <% end %>
 </div>
 
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<div class="actions">
+  <%= f.submit %>
+</div>
 <% end %>

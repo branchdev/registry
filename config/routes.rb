@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :school_interests
   resources :artists
   resources :teachers
-  devise_for :users
+  devise_for :users, :controllers => { registrations: 'registrations' }
 
   resources :connections do
     member do

@@ -1,13 +1,13 @@
 class TeachersController < ApplicationController
   before_action :set_teacher, only: [:show, :edit, :update, :destroy]
-  before_filter :require_authorization, only: [:edit, :update, :destroy, :show]
+  before_filter :require_authorization, only: [:edit, :update, :destroy]
 
   # GET /teachers
   # GET /teachers.json
   def index
 
    if params[:q] && params[:q].reject {|k, v| v.blank? }.present?
-    @q = Teacher.search(params[:q]).distinct
+    @q = Teacher.search(params[:q])
     @schools = @q.result(distinct: true)
   else
     @q = Teacher.search
@@ -82,6 +82,6 @@ class TeachersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def teacher_params
-      params.require(:teacher).permit(:school, user_attributes: [ :id, :email, :password], school_interest_ids:[])
+      params.require(:teacher).permit(:school,  user_attributes: [ :id, :email, :password, :first_name, :last_name], school_interest_ids:[])
     end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531181434) do
+ActiveRecord::Schema.define(version: 20160602000001) do
 
   create_table "artist_expertises", force: :cascade do |t|
     t.string   "name"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20160531181434) do
     t.integer  "meta_id"
     t.string   "meta_type"
     t.boolean  "admin",                  default: false
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

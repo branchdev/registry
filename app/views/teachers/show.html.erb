@@ -5,8 +5,97 @@
   <%= @teacher.school %>
     <br><h2>Interests:</h2><h3><%=  @teacher.school_interests.map(&:name).sort.join(", ") %></h3>
 </p>
+<h1>School Info Here</h1>
 
-<% if current_user.id == @teacher.user.id or current_user.admin? %>
+<% if current_user.id == @teacher.user.id or current_user.admin?%>
+
+	<% connections = Connection.where(teacher_id: @teacher.id)%>
+
+	
+
+	<% pending = [] %>
+	<% viewable = [] %>
+	<% accepted = [] %>
+
+	<% connections.each do |c| %>
+		<% if  c.status == 'artist' %>
+			<% pending.append(c) %>
+		<% elsif c.status == 'accepted' %>
+			<% accepted.append(c) %>
+		<% elsif c.status == 'teacher' %>
+			<% viewable.append(c) %>
+		<% end %>
+	<% end %>
+
+	<% debug(viewable) %>
+	
+
+	<%= debug(params) %>
+
+	<h2>Connections</h2>
+
+	<% if accepted.empty? %>
+		<h3>No current connections</h3>
+	<% else %>
+		
+		<table>
+			<tr>
+				<th>teacher_id</th>
+				<th>artist_id</th>
+				<th>status</th>
+			</tr>
+			<% accepted.each do |conn| %>
+			<%= debug(conn.id) %>
+				<tr>
+					<td> <%= conn.teacher_id %></td>
+					<td> <%= conn.artist_id %></td>
+					<td> Connected!</td>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
+	
+
+	
+	<h2>Pending Connections</h2>
+	<% if pending.empty?  && viewable.empty?%>
+		<h3>No current pending connections</h3>
+	<% else %>
+		<table>
+			<tr>
+				<th>artist_id</th>
+				<th>teacher_id</th>
+				<th>status</th>
+			</tr>
+			<% pending.each do |conn| %>
+				<%= debug(conn.id) %>
+				<tr>
+					<td> <%= conn.artist_id %></td>
+					<td> <%= conn.teacher_id %></td>
+					<td> Pending Connection</td>
+						
+						<td> <%= link_to 'Decline Connection', connection_path(:id => conn.id), :method => :delete %></td>
+				</tr>
+				<% end %>
+				<% viewable.each do |conn| %>
+				<%= debug(conn.id) %>
+				<tr>
+					<td> <%= conn.artist_id %></td>
+					<td> <%= conn.teacher_id %></td>
+					<td> Pending Connections</td>
+						<td> <%= link_to 'Accept Connection', connection_path(:id => conn.id), :method => "put" %></td>
+						<td> <%= link_to 'Decline Connection', connection_path(:id => conn.id), :method => :delete %></td>
+
+
+				<% end %>
+				</tr>
+			<% end %>
+		</table>
+
+
+
 	<%= link_to 'Edit', edit_teacher_path(@teacher) %> |
+<% else %>
+	<%= link_to '+ Connect', connection_request_connection_path(params[:id]), :method => :put %>
 <% end %>
 <%= link_to 'Back', teachers_path %>
